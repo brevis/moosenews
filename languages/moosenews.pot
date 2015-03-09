@@ -1,0 +1,68 @@
+# Copyright (C) 2015 Moose News
+# This file is distributed under the same license as the Moose News package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Moose News 1.0.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/moosenews\n"
+"POT-Creation-Date: 2015-03-09 07:46:14+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-03-09 09:57+0200\n"
+"Last-Translator: brevis <brevis@i.ua>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.5.7\n"
+"Language: ru_RU\n"
+"X-Poedit-KeywordsList: __;_e;_\n"
+
+#: includes/MooseNewsAjax.php:86 public/partials/form.php:21
+msgid "Please <a href=\"%s\">login</a> for vote or post new theme."
+msgstr "Для того чтобы оставить тему для обсуждения или проголосовать, <a href=\"%s\">авторизуйтесь</a>."
+
+#: includes/MooseNewsAjax.php:121
+msgid "Please fill form"
+msgstr ""
+
+#: includes/MooseNewsAjax.php:125
+msgid "Please enter longer description"
+msgstr ""
+
+#: includes/MooseNewsAjax.php:129
+msgid "The description can be up to %s characters long"
+msgstr ""
+
+#: includes/MooseNewsAjax.php:155
+msgid "Something went wrong :("
+msgstr ""
+
+#: public/partials/form.php:11
+msgid "Suggest a theme:"
+msgstr ""
+
+#: public/partials/form.php:16
+msgid "Preview"
+msgstr "Предпросмотр"
+
+#: public/partials/form.php:17
+msgid "Submit"
+msgstr "Отправить"
+
+#: public/partials/list.php:20
+msgid "Sort by:"
+msgstr ""
+
+#: public/partials/list.php:21
+msgid "Post date"
+msgstr ""
+
+#: public/partials/list.php:22
+msgid "Rating"
+msgstr ""
+
+#: public/partials/list.php:34
+msgid "%s suggested a theme:"
+msgstr "%s предложил(а) тему:"
+
+#: public/partials/list.php:48
+msgid "No themes yet"
+msgstr ""

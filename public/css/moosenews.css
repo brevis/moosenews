@@ -1,0 +1,145 @@
+.moosenews-form textarea {
+    width: 100%;
+    height: 8em;
+}
+
+.moosenews-form .chars-counter,
+.moosenews-form .controls {
+    text-align: right;
+}
+
+.moosenews-form .moosenews-form-preview {
+    margin: 10px 0;
+    background: #f7f5e7;
+    max-height: 300px;
+    overflow-y: auto;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}
+
+.moosenews-form .moosenews-form-preview div {
+    padding: 1em;
+}
+
+.moosenews-form .moosenews-form-preview div p:last-child {
+    margin-bottom: 0;
+}
+
+.moosenews-form .moosenews-form-preview div.errors {
+    color: #d80000;
+}
+
+.moosenews-form .moosenews-form-preview  div.errors a {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.moosenews-form h2 {
+    font-size: 1em;
+    margin: 0;
+}
+
+.moosenews-form textarea.error {
+    border: 2px solid #d80000;
+}
+
+.moosenews-alert {
+    margin: 1em 0;
+    padding: 1em;
+    background: #f7f5e7;
+}
+
+.moosenews-theme {
+    margin: 2em 0;
+    position: relative;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}
+
+.moosenews-theme .moosenews-rating {
+    position: absolute;
+    left: -40px;
+}
+
+.moosenews-theme .moosenews-rating a {
+    display: block;
+    width: 1em;
+    margin: 0 auto;
+    text-decoration: none;
+    color: #cccccc;
+    text-align: center;
+}
+
+.moosenews-theme .moosenews-rating a.disabled,
+.moosenews-theme .moosenews-rating a.disabled:hover {
+    color: #cccccc;
+    cursor: default;
+}
+
+.moosenews-theme .moosenews-rating a.voted {
+    color: #d80000;
+}
+
+.moosenews-theme .moosenews-rating a.voted,
+.moosenews-theme .moosenews-rating a.voted:hover {
+    color: #d80000;
+    cursor: default;
+}
+
+.moosenews-theme .moosenews-rating span {
+    display: inline-block;
+    width: 40px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.moosenews-theme .moosenews-rating span.good {
+
+}
+
+.moosenews-theme .moosenews-rating span.bad {
+    color: #888888;
+}
+
+.moosenews-theme .moosenews-meta {
+    font-size: 14px;
+}
+
+.moosenews-theme .moosenews-meta .date {
+    float: right;
+}
+
+.moosenews-theme .moosenews-content {
+    margin-top: 4px;
+}
+
+.moosenews-theme .admin .deletetheme {
+    background: #d80000;
+    color: #ffffff;
+    padding: 1px 3px;
+    font-size: 10px;
+}
+
+.moosenews-order {
+    margin: 1em 0;
+    background: #f7f5e7;
+    padding: 1em;
+}
+
+.moosenews-order a {
+    margin: 0 10px;
+}
+
+.moosenews-order a.current {
+    font-weight: bold;
+}
+
+.moosenews-nothemes {
+    height: 100px;
+    padding-top: 40px;
+    text-align: center;
+}
