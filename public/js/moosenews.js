@@ -1,9 +1,5 @@
 jQuery(document).ready(function($) {
 
-    var data = {
-        "content": "bla-bla-bla"
-    };
-
     function disableFormControls() {
         jQuery('.moosenews-form *').prop('disabled', true);
     }
