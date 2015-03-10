@@ -213,6 +213,7 @@ class MooseNews {
         foreach($news as $k=>$v) {
             $news[$k]->content = self::htmlize($v->content_raw);
             $news[$k]->canEdit = is_object($user) && intval($v->user_id) == intval($user->id);
+            if (!$user->exists()) $news[$k]->vote = null;
         }
 
         return $news;
