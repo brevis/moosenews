@@ -35,6 +35,8 @@ class MooseNews {
      */
     protected $version;
 
+    protected static $htmlPurifer = null;
+
     /**
      * Define the core functionality of the plugin.
      *
@@ -49,6 +51,35 @@ class MooseNews {
         $this->loadTranslations();
         $this->definePublicHooks();
         $this->defineShortcodes();
+    }
+
+    /**
+     * Make content sexy
+     *
+     * @param string $content
+     * @return string
+     */
+    public static function htmlize($content) {
+        if (self::$htmlPurifer == null) {
+            $config = HTMLPurifier_Config::createDefault();
+            $config->set('HTML.Allowed', 'a,b,strong,i,em,u,s');
+            $config->set('HTML.AllowedAttributes', 'a.href,a.target');
+            $config->set('Core.EscapeInvalidTags', true);
+            $config->set('AutoFormat.Linkify', true);
+            $config->set('HTML.TargetBlank', true);
+            $config->set('HTML.Nofollow', true);
+            $config->set('AutoFormat.RemoveEmpty', 'true');
+            self::$htmlPurifer = new HTMLPurifier($config);
+        }
+
+        try{
+            $content = self::$htmlPurifer->purify($content);
+            $content = nl2br($content);
+            $content = preg_replace("/(<br\s*\/?>\s*){3,}/", "<br><br>", $content);
+            return $content;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -102,6 +133,7 @@ class MooseNews {
         // ajax handler of form submit
         $ajaxHandler = new MooseNewsAjax();
         $this->loader->addAction('wp_ajax_moosenews_createtheme', $ajaxHandler, 'createTheme');
+        $this->loader->addAction('wp_ajax_moosenews_updatetheme', $ajaxHandler, 'updateTheme');
         $this->loader->addAction('wp_ajax_moosenews_previewtheme', $ajaxHandler, 'previewTheme');
         $this->loader->addAction('wp_ajax_moosenews_deletetheme', $ajaxHandler, 'deleteTheme');
         $this->loader->addAction('wp_ajax_moosenews_vote', $ajaxHandler, 'vote');
@@ -169,14 +201,21 @@ class MooseNews {
             $votesUserSql = 'votes.user_id = ' . $user->id;
         }
 
-        return $wpdb->get_results("
-               SELECT news.id as id, news.content as content, news.postdate as postdate,
-                      news.rating as rating, users.display_name as nickname,
+        $news = $wpdb->get_results("
+               SELECT news.id as id, news.content as content_raw, news.postdate as postdate,
+                      news.rating as rating, news.user_id as user_id, users.display_name as nickname,
                       votes.vote_type as vote
                  FROM ".$wpdb->prefix.self::NEWS_TABLE." news
             LEFT JOIN ".$wpdb->prefix."users users ON (users.id = news.user_id)
             LEFT JOIN ".$wpdb->prefix.self::VOTES_TABLE." votes ON ($votesUserSql AND news.id = votes.news_id)
            ORDER BY $sort DESC");
+
+        foreach($news as $k=>$v) {
+            $news[$k]->content = self::htmlize($v->content_raw);
+            $news[$k]->canEdit = is_object($user) && intval($v->user_id) == intval($user->id);
+        }
+
+        return $news;
     }
 
     /**

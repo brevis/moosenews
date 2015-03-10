@@ -8,12 +8,13 @@ jQuery(document).ready(function($) {
         jQuery('.moosenews-form *').prop('disabled', false);
     }
 
-    function submitForm(submitType) {
-        $('.moosenews-form textarea').removeClass('error');
-        var content = $.trim($('.moosenews-form textarea').val());
-        var maxlength = parseInt($('.moosenews-form textarea').data('maxlength'), 10);
+    function submitForm(submitType, el) {
+        var $textarea = $(el).parents('.moosenews-form').find('textarea');
+        $textarea.removeClass('error');
+        var content = $.trim($textarea.val());
+        var maxlength = parseInt($textarea.data('maxlength'), 10);
         if (content.length < 1 || content.length > maxlength) {
-            $('.moosenews-form textarea').addClass('error');
+            $textarea.addClass('error');
             return false;
         }
 
@@ -36,27 +37,72 @@ jQuery(document).ready(function($) {
         }, "json");
     }
 
-    $('.moosenews-form').on('submit', function(event) {
-        submitForm('submit');
+    // create new theme
+    $('.moosenews-form button.submit').on('click', function(event) {
+        submitForm('submit', this);
         event.preventDefault();
     });
 
+    // preview
     $('.moosenews-form button.preview').on('click', function() {
-        submitForm('preview');
+        submitForm('preview', this);
+    });
+
+    // close form
+    $('.moosenews-form button.close').on('click', function() {
+        $(this).parents('.moosenews-form').hide();
+        $(this).parents('.moosenews-theme').find('.moosenews-content').show();
+    });
+
+    // edit theme
+    $('.moosenews-theme .admin .edittheme').on('click', function(event) {
+        $(this).parents('.moosenews-theme').find('.moosenews-content').hide();
+        $(this).parents('.moosenews-theme').find('.moosenews-form').show();
+        event.preventDefault();
+    });
+
+    $('.moosenews-form button.update').on('click', function() {
+        var id = $(this).data('id');
+        var $textarea = $(this).parents('.moosenews-form').find('textarea');
+        $textarea.removeClass('error');
+        var content = $.trim($textarea.val());
+        var maxlength = parseInt($textarea.data('maxlength'), 10);
+        if (content.length < 1 || content.length > maxlength) {
+            $textarea.addClass('error');
+            return false;
+        }
+        var ajaxurl = moosenewsvars.ajaxurl_updatetheme;
+        var $error = $(this).parents('.moosenews-form').find('.error');
+        $error.html('');
+        var $newsContainer = $(this).parents('.moosenews-theme');
+        $.post(ajaxurl, {"id": id, "content": content}, function(response) {
+            if ( response.status == 'ok' ) {
+                $newsContainer.find('.moosenews-form').hide();
+                $newsContainer.find('.moosenews-content .content').html(response.content);
+                $newsContainer.find('.moosenews-content').show();
+            } else {
+                $error.html(response.errors);
+            }
+        }, "json");
     });
 
     // textarea maxlength
-    $('.moosenews-form .chars-counter span').text($('.moosenews-form textarea').data('maxlength'));
-    $('.moosenews-form textarea').on('keydown keyup change', function() {
-        var content = $.trim($(this).val());
-        var limit = parseInt($(this).data('maxlength'), 10);
+    function calculateTextareaChars(el) {
+        var content = $.trim($(el).val());
+        var limit = parseInt($(el).data('maxlength'), 10);
         var chars = content.length;
         if (chars > limit){
             var new_content = content.substr(0, limit);
-            $(this).val(new_content);
+            $(el).val(new_content);
             chars = limit;
         }
-        $('.moosenews-form .chars-counter span').text(limit - chars);
+        $(el).parent().find('.chars-counter span').text(limit - chars);
+    }
+    $('.moosenews-form .chars-counter span').text($('.moosenews-form textarea').data('maxlength'));
+    $('.moosenews-form textarea').on('keydown keyup change', function() {
+        calculateTextareaChars(this);
+    }).each(function() {
+        calculateTextareaChars(this);
     });
 
     // rating

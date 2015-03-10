@@ -34,7 +34,7 @@ class MooseNewsAjax {
         if ($this->checkUser() && $this->validateForm()) {
             $wpdb->insert($wpdb->prefix . MooseNews::NEWS_TABLE, array(
                 'user_id' => $this->user->id,
-                'content' => $this->processContent($this->content),
+                'content' => $this->content,
                 'postdate' => date('Y-m-d H:i:s'),
                 'rating' => 0,
             ));
@@ -42,6 +42,32 @@ class MooseNewsAjax {
         } else {
             $this->error();
         }
+    }
+
+    /**
+     * Update theme handler
+     */
+    public function updateTheme() {
+        global $wpdb;
+
+        if (!$this->checkUser()) {
+            $this->error();
+        }
+
+        $newsId = isset($_POST['id']) ? intval($_POST['id']) : 0;
+        $newsItem = $this->getNewsById($newsId);
+        if (!$this->validateForm() || !$newsItem
+            || (!current_user_can('moderate_comments') && $newsItem->user_id != $this->user->id)
+        ) {
+            $this->error();
+        }
+
+        $wpdb->update(
+            $wpdb->prefix . MooseNews::NEWS_TABLE,
+            array('content' => $this->content),
+            array('id' => $newsId)
+        );
+        $this->ok();
     }
 
     /**
@@ -61,11 +87,18 @@ class MooseNewsAjax {
     public function deleteTheme() {
         global $wpdb;
 
-        if (!current_user_can('moderate_comments')) {
+        if (!$this->checkUser()) {
             $this->error();
         }
 
         $newsId = isset($_POST['id']) ? intval($_POST['id']) : 0;
+        $newsItem = $this->getNewsById($newsId);
+        if (!$newsItem
+            || (!current_user_can('moderate_comments') && $newsItem->user_id != $this->user->id)
+        ) {
+            $this->error();
+        }
+
         $wpdb->delete($wpdb->prefix . MooseNews::NEWS_TABLE, array('id' => $newsId));
         $wpdb->delete($wpdb->prefix . MooseNews::VOTES_TABLE, array('news_id' => $newsId));
         $this->ok();
@@ -113,6 +146,21 @@ class MooseNewsAjax {
     }
 
     /**
+     * Get news theme from database by id
+     */
+    protected function getNewsById($id) {
+        global $wpdb;
+
+        $id = intval($id);
+        if ($id < 1) return false;
+
+        $item = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . MooseNews::NEWS_TABLE . " WHERE id=$id LIMIT 1");
+        if ( !is_object($item) || count($item) < 1) return false;
+
+        return $item;
+    }
+
+    /**
      * Check if current user is logged in
      *
      * @return bool
@@ -134,32 +182,6 @@ class MooseNewsAjax {
     protected function getContent() {
         $content = isset($_POST['content']) ? stripslashes($_POST['content']) : '';
         return trim($content);
-    }
-
-    /**
-     * Make content sexy
-     *
-     * @param $content
-     * @return mixed|string
-     */
-    protected function processContent($content) {
-        try{
-            $config = HTMLPurifier_Config::createDefault();
-            $config->set('HTML.Allowed', 'a,b,strong,i,em,u,s');
-            $config->set('HTML.AllowedAttributes', 'a.href,a.target');
-            $config->set('Core.EscapeInvalidTags', true);
-            $config->set('AutoFormat.Linkify', true);
-            $config->set('HTML.TargetBlank', true);
-            $config->set('HTML.Nofollow', true);
-            $config->set('AutoFormat.RemoveEmpty', 'true');
-            $purifier = new HTMLPurifier($config);
-            $content = $purifier->purify($content);
-            $content = nl2br($content);
-            $content = preg_replace("/(<br\s*\/?>\s*){3,}/", "<br><br>", $content);
-            return $content;
-        } catch (Exception $e) {
-            $this->error();
-        }
     }
 
     /**
@@ -191,7 +213,7 @@ class MooseNewsAjax {
     protected function ok() {
         $this->response(array(
             'status' => 'ok',
-            'content' => $this->processContent($this->content),
+            'content' => MooseNews::htmlize($this->content),
             'errors' => $this->errors,
         ));
     }
@@ -202,7 +224,7 @@ class MooseNewsAjax {
     protected function error() {
         $this->response(array(
             'status' => 'error',
-            'content' => $this->processContent($this->content),
+            'content' => MooseNews::htmlize($this->content),
             'errors' => $this->errors,
         ));
     }

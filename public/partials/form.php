@@ -14,7 +14,7 @@ if ($user->exists()) : ?>
         <div class="chars-counter"><span></span></div>
         <div class="controls">
             <button type="button" class="preview"><?php echo __('Preview', 'moosenews'); ?></button>
-            <button><?php echo __('Submit', 'moosenews'); ?></button>
+            <button type="button" class="submit"><?php echo __('Submit', 'moosenews'); ?></button>
         </div>
     </form>
 <?php else : ?>

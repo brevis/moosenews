@@ -34,13 +34,23 @@ function pageUrl($sort='') {
                 <span class="date"><?php echo date("d F Y, H:i", strtotime($n->postdate)); ?></span>
             </div>
             <div class="moosenews-content">
-                <?php echo $n->content; ?>
-            </div>
-            <?php if (current_user_can('moderate_comments')) : ?>
+                <div class="content"><?php echo $n->content; ?></div>
                 <div class="admin">
-                    <a href="#" class="deletetheme" data-id="<?php echo $n->id; ?>">delete</a>
+                    <?php if ($n->canEdit || current_user_can('moderate_comments')) : ?>
+                        <a href="#" class="edittheme" data-id="<?php echo $n->id; ?>">edit</a>
+                        <a href="#" class="deletetheme" data-id="<?php echo $n->id; ?>">delete</a>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
+            </div>
+            <div class="moosenews-form" style="display: none;">
+                <div class="error"></div>
+                <textarea data-maxlength="<?php echo $maxlength; ?>"><?php echo esc_html($n->content_raw); ?></textarea>
+                <div class="chars-counter"><span></span></div>
+                <div class="controls">
+                    <button type="button" class="close" data-id="<?php echo $n->id; ?>"><?php echo __('Close', 'moosenews'); ?></button>
+                    <button type="button" class="update" data-id="<?php echo $n->id; ?>"><?php echo __('Save', 'moosenews'); ?></button>
+                </div>
+            </div>
         </div>
     <?php endforeach; ?>
 <?php else : ?>
@@ -52,6 +62,7 @@ function pageUrl($sort='') {
 <script>
     var moosenewsvars = {
         "ajaxurl_createtheme": "<?php echo admin_url('admin-ajax.php?action=moosenews_createtheme'); ?>",
+        "ajaxurl_updatetheme": "<?php echo admin_url('admin-ajax.php?action=moosenews_updatetheme'); ?>",
         "ajaxurl_previewtheme": "<?php echo admin_url('admin-ajax.php?action=moosenews_previewtheme'); ?>",
         "ajaxurl_deletetheme": "<?php echo admin_url('admin-ajax.php?action=moosenews_deletetheme'); ?>",
         "ajaxurl_vote": "<?php echo admin_url('admin-ajax.php?action=moosenews_vote'); ?>"

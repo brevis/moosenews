@@ -27,7 +27,8 @@
     margin-bottom: 0;
 }
 
-.moosenews-form .moosenews-form-preview div.errors {
+.moosenews-form .moosenews-form-preview div.errors,
+.moosenews-form .error{
     color: #d80000;
 }
 
@@ -115,6 +116,13 @@
 
 .moosenews-theme .moosenews-content {
     margin-top: 4px;
+}
+
+.moosenews-theme .admin .edittheme {
+    background: #006505;
+    color: #ffffff;
+    padding: 1px 3px;
+    font-size: 10px;
 }
 
 .moosenews-theme .admin .deletetheme {
