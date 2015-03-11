@@ -208,6 +208,7 @@ class MooseNews {
                  FROM ".$wpdb->prefix.self::NEWS_TABLE." news
             LEFT JOIN ".$wpdb->prefix."users users ON (users.id = news.user_id)
             LEFT JOIN ".$wpdb->prefix.self::VOTES_TABLE." votes ON ($votesUserSql AND news.id = votes.news_id)
+             GROUP BY news.id
            ORDER BY $sort DESC");
 
         foreach($news as $k=>$v) {

@@ -120,10 +120,12 @@ class MooseNewsAjax {
             $this->error();
         }
 
-        $checkVote = $wpdb->get_var("SELECT vote_type FROM " . $wpdb->prefix . MooseNews::VOTES_TABLE
-            . " WHERE news_id=$newsId AND user_id=" . $this->user->id . " LIMIT 1");
-        if (!empty($checkVote)) {
-            $this->error();
+        if (!current_user_can('delete_users')) {
+            $checkVote = $wpdb->get_var("SELECT vote_type FROM " . $wpdb->prefix . MooseNews::VOTES_TABLE
+                . " WHERE news_id=$newsId AND user_id=" . $this->user->id . " LIMIT 1");
+            if (!empty($checkVote)) {
+                $this->error();
+            }
         }
 
         $wpdb->insert($wpdb->prefix . MooseNews::VOTES_TABLE, array(
