@@ -107,14 +107,16 @@ jQuery(document).ready(function($) {
 
     // rating
     $('.moosenews-theme .moosenews-rating a').on('click', function(event) {
-        if ($(this).hasClass('disabled')) return false;
+        if (!moosenewsvars.id_admin_logged && $(this).hasClass('disabled')) return false;
 
         var id = $(this).data('id');
         var type = $(this).data('type');
         $.post(moosenewsvars.ajaxurl_vote, {"id": id, "type": type}, function(response) {
             if ( response.status == 'ok' ) {
-                $('#moosenewstheme' + id + ' .moosenews-rating a').addClass('disabled');
-                $('#moosenewstheme' + id + ' .moosenews-rating a.' + type).addClass('voted');
+                if (!moosenewsvars.id_admin_logged) {
+                    $('#moosenewstheme' + id + ' .moosenews-rating a').addClass('disabled');
+                    $('#moosenewstheme' + id + ' .moosenews-rating a.' + type).addClass('voted');
+                }
 
                 var rating = parseInt(response.content, 10);
                 var $ratingEl = $('#moosenewstheme' + id + ' .moosenews-rating span.counter');

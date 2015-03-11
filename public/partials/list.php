@@ -25,9 +25,9 @@ function pageUrl($sort='') {
     <?php foreach($news as $n) : ?>
         <div id="moosenewstheme<?php echo $n->id; ?>" class="moosenews-theme">
             <div class="moosenews-rating">
-                <a href="#" class="up<?php if ($n->vote=='up') echo ' voted'; ?><?php if ($n->vote!='') echo ' disabled'; ?>" data-id="<?php echo $n->id; ?>" data-type="up">▲</a>
+                <a href="#" class="up<?php if ($n->vote=='up') echo ' voted'; ?><?php if (!current_user_can('delete_users') && $n->vote!='') echo ' disabled'; ?>" data-id="<?php echo $n->id; ?>" data-type="up">▲</a>
                 <span class="counter<?php if ($n->rating > 0) echo ' good'; elseif ($n->rating < 0) echo ' bad'; ?>"><?php echo $n->rating; ?></span>
-                <a href="#" class="down<?php if ($n->vote=='down') echo ' voted'; ?><?php if ($n->vote!='') echo ' disabled'; ?>" data-id="<?php echo $n->id; ?>" data-type="down">▼</a>
+                <a href="#" class="down<?php if ($n->vote=='down') echo ' voted'; ?><?php if (!current_user_can('delete_users') && $n->vote!='') echo ' disabled'; ?>" data-id="<?php echo $n->id; ?>" data-type="down">▼</a>
             </div>
             <div class="moosenews-meta">
                 <?php printf(__('%s suggested a theme:', 'moosenews'), $n->nickname); ?>
@@ -65,6 +65,7 @@ function pageUrl($sort='') {
         "ajaxurl_updatetheme": "<?php echo admin_url('admin-ajax.php?action=moosenews_updatetheme'); ?>",
         "ajaxurl_previewtheme": "<?php echo admin_url('admin-ajax.php?action=moosenews_previewtheme'); ?>",
         "ajaxurl_deletetheme": "<?php echo admin_url('admin-ajax.php?action=moosenews_deletetheme'); ?>",
-        "ajaxurl_vote": "<?php echo admin_url('admin-ajax.php?action=moosenews_vote'); ?>"
+        "ajaxurl_vote": "<?php echo admin_url('admin-ajax.php?action=moosenews_vote'); ?>",
+        "id_admin_logged": <?php echo current_user_can('delete_users') ? 'true' : 'false'; ?>
     };
 </script>
