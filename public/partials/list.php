@@ -30,7 +30,7 @@ function pageUrl($sort='') {
                 <a href="#" class="down<?php if ($n->vote=='down') echo ' voted'; ?><?php if ($n->vote!='') echo ' disabled'; ?>" data-id="<?php echo $n->id; ?>" data-type="down">▼</a>
             </div>
             <div class="moosenews-meta">
-                <?php printf(__('%s suggested a theme:', 'moosenews'), $n->nickname); ?>
+                <?php printf(__('%s suggested a theme:', 'moosenews'), esc_html($n->nickname)); ?>
                 <span class="date"><?php echo date("d F Y, H:i", strtotime($n->postdate)); ?></span>
             </div>
             <div class="moosenews-content">
