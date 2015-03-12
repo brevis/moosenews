@@ -1,4 +1,4 @@
-Вариант страницы [Обсудить] для [RCMP.me](http://rcmp.me)
+Страница "Обсудить" для [RCMP.me](http://rcmp.me)
 
 ![Moose News](http://1.bp.blogspot.com/-pxxA3dLq6Jc/VP3WWVI691I/AAAAAAAAAmE/IUIsYLQcEqg/s1600/moosenews.png)
 
