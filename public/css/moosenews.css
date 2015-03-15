@@ -62,8 +62,8 @@
 }
 
 .moosenews-theme .moosenews-rating {
-    position: absolute;
-    left: -40px;
+    width: 40px;
+    float: left;    
 }
 
 .moosenews-theme .moosenews-rating a {
@@ -108,6 +108,7 @@
 
 .moosenews-theme .moosenews-meta {
     font-size: 14px;
+    margin-left: 40px;
 }
 
 .moosenews-theme .moosenews-meta .date {
@@ -116,6 +117,7 @@
 
 .moosenews-theme .moosenews-content {
     margin-top: 4px;
+    margin-left: 40px;
 }
 
 .moosenews-theme .admin .edittheme {
@@ -151,3 +153,12 @@
     padding-top: 40px;
     text-align: center;
 }
+
+
+@media screen and (max-width: 360px) {
+    .moosenews-theme .moosenews-meta .date {
+        display: block;
+        float: none;
+    }
+}
+
