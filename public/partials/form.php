@@ -18,5 +18,8 @@ if ($user->exists()) : ?>
         </div>
     </form>
 <?php else : ?>
-    <div class="moosenews-alert"><?php printf(__('Please <a href="%s">login</a> for vote or post new theme.', 'moosenews'), '/wp-login.php'); ?></div>
+    <div class="moosenews-alert">
+        <?php printf(__('Please <a href="%s">login</a> for vote or post new theme.', 'moosenews'), '/wp-login.php'); ?>
+        <?php if (has_action('wordpress_social_login')) do_action('wordpress_social_login'); ?>
+    </div>
 <?php endif; ?>
