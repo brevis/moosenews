@@ -25,9 +25,15 @@ function pageUrl($sort='') {
     <?php foreach($news as $n) : ?>
         <div id="moosenewstheme<?php echo $n->id; ?>" class="moosenews-theme">
             <div class="moosenews-rating">
-                <a href="#" class="up<?php if ($n->vote=='up') echo ' voted'; ?><?php if (!current_user_can('delete_users') && $n->vote!='') echo ' disabled'; ?>" data-id="<?php echo $n->id; ?>" data-type="up">▲</a>
+                <?php $user = wp_get_current_user();
+                if ($user->exists()) : ?>
+                    <a href="#" class="up<?php if ($n->vote=='up') echo ' voted'; ?><?php if (!current_user_can('delete_users') && $n->vote!='') echo ' disabled'; ?>" data-id="<?php echo $n->id; ?>" data-type="up">▲</a>
+                <?php endif; ?>
                 <span class="counter<?php if ($n->rating > 0) echo ' good'; elseif ($n->rating < 0) echo ' bad'; ?>"><?php echo $n->rating; ?></span>
-                <a href="#" class="down<?php if ($n->vote=='down') echo ' voted'; ?><?php if (!current_user_can('delete_users') && $n->vote!='') echo ' disabled'; ?>" data-id="<?php echo $n->id; ?>" data-type="down">▼</a>
+                <?php $user = wp_get_current_user();
+                if ($user->exists()) : ?>
+                    <a href="#" class="down<?php if ($n->vote=='down') echo ' voted'; ?><?php if (!current_user_can('delete_users') && $n->vote!='') echo ' disabled'; ?>" data-id="<?php echo $n->id; ?>" data-type="down">▼</a>
+                <?php endif; ?>
             </div>
             <div class="moosenews-meta">
                 <?php printf(__('%s suggested a theme:', 'moosenews'), esc_html($n->nickname)); ?>
