@@ -20,6 +20,6 @@ if ($user->exists()) : ?>
 <?php else : ?>
     <div class="moosenews-alert">
         <?php printf(__('Please <a href="%s">login</a> for vote or post new theme.', 'moosenews'), '/wp-login.php'); ?>
-        <?php do_action('wordpress_social_login'); ?>
+        <?php if (has_action('wordpress_social_login')) do_action('wordpress_social_login'); ?>
     </div>
 <?php endif; ?>

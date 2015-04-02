@@ -62,7 +62,7 @@ register_activation_hook(__FILE__, function() {
  * The core plugin class that is used to define internationalization,
  * dashboard-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path(__FILE__) . 'includes/moosenews.php';
+require plugin_dir_path(__FILE__) . 'includes/MooseNews.php';
 
 /**
  * Begins execution of the plugin.

@@ -158,8 +158,7 @@
     text-align: center;
 }
 
-
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 640px) {
     .moosenews-theme .moosenews-meta .date {
         display: block;
         float: none;
